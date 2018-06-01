@@ -8,7 +8,7 @@ var routes = require('./routes/index');
 var settings = require('./settings');
 var flash = require('connect-flash');
 var usersRouter = require('./routes/users');
-
+var fs = require('fs');
 var app = express();
 
 var session = require('express-session');

@@ -121,7 +121,7 @@ module.exports = function(app) {
 			error: req.flash('error').toString()
 		});
 	});
-//发表文章	
+	//发表文章	
 	app.post('/post', checkLogin);
 	app.post('/post', function(req, res) {
 		//		checkLogin();
@@ -136,38 +136,47 @@ module.exports = function(app) {
 			res.redirect('/'); //发表成功跳转到主页
 		});
 	});
-//添加案例
-app.post('/addCase', function(req,res) {
+	//添加案例
+	app.post('/addCase', function(req, res) {
 		var currentCase = req.body.case;
-		var cases= new Case(currentCase.title,currentCase.content,currentCase.images);
-
+		var cases = new Case(currentCase.title, currentCase.content, currentCase.images);
+		console.log(currentCase.content)
 		cases.save(function(err, user) {
 			if(err) {
-				return res.json('error',err);
-			};
-			return res.json(currentCase)
+				return res.json('error', err);
+			}
+			return res.json({"success":"添加成功"})
 		});
-});
-//上传图片
+	});
+	//获取案例
+	app.get('/case', function(req, res) {
+		//	var a= {
+		//			'bb': 'cccc'
+		//	};
+		Case.case(function(err, data) {
+			if(err) {
+				return res.json('error', err);
+			};
+			//			console.log(data)
+			return res.json(data)
+		});
+	});
+
+	//上传图片
 	app.get('/upload', checkLogin);
 	app.get('/upload', function(req, res) {
 		req.flash('success', '文件上传成功!');
-  		res.redirect('/upload');
-//		res.render('upload', {
-//			title: '文件上传',
-//			user: req.session.user,
-//			success: req.flash('success').toString(),
-//			error: req.flash('error').toString()
-//		});
+		res.redirect('/upload');
+		//		res.render('upload', {
+		//			title: '文件上传',
+		//			user: req.session.user,
+		//			success: req.flash('success').toString(),
+		//			error: req.flash('error').toString()
+		//		});
 	});
 
-
-
-
-
-
-//通过用户名搜索文章
-app.post('/find', function(req, res) {
+	//通过用户名搜索文章
+	app.post('/find', function(req, res) {
 		var search = req.body.search;
 		var test = new Find(search);
 
@@ -180,7 +189,7 @@ app.post('/find', function(req, res) {
 				return res.json(user);
 			};
 		});
-});
+	});
 
 	function checkLogin(req, res, next) {
 		if(!req.session.user) {
