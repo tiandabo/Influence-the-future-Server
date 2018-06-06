@@ -150,16 +150,24 @@ module.exports = function(app) {
 	});
 	//获取案例
 	app.get('/case', function(req, res) {
-		//	var a= {
-		//			'bb': 'cccc'
-		//	};
 		Case.case(function(err, data) {
 			if(err) {
 				return res.json('error', err);
 			};
-			//			console.log(data)
 			return res.json(data)
 		});
+	});
+	
+	//获取案例详情
+	app.get('/case/:id', function(req, res) {
+//		console.log(req.params)
+		var id = req.params.id;
+		Case.caseOne(id,function(err,data) {
+			if(err) {
+				return res.json('error',err);
+			}
+			return res.json(data)
+		})
 	});
 
 	//上传图片
@@ -167,12 +175,6 @@ module.exports = function(app) {
 	app.get('/upload', function(req, res) {
 		req.flash('success', '文件上传成功!');
 		res.redirect('/upload');
-		//		res.render('upload', {
-		//			title: '文件上传',
-		//			user: req.session.user,
-		//			success: req.flash('success').toString(),
-		//			error: req.flash('error').toString()
-		//		});
 	});
 
 	//通过用户名搜索文章
